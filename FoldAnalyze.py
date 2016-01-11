@@ -18,8 +18,14 @@ except:
     pass
 
 class FoldAnalyze():
+    '''
+        List the folders in size order
+    '''
     def __init__(self, root='.'):
-        self.OSInfo = platform.system()
+
+        self.OSInfo = platform.system() # Used to identify the Linux or Windows
+                                        # platform, which differ in codec in
+                                        # folder name
 
         # try to find the width of terminal
         try:
@@ -27,10 +33,9 @@ class FoldAnalyze():
         except:
             w = 80
 
-        self.showWidth = w - 10
-        self.dirSizeList = []
-        self.dirSizeDict = {}
-        self.dirList = []
+        self.showWidth = w - 10 # Setup the width of list
+        self.dirSizeList = []   # Store directories size info in list type
+        self.dirSizeDict = {}   # Store directories size info in dict type
 
         # Progress Bar
         count = 0
@@ -38,7 +43,6 @@ class FoldAnalyze():
         for (dirpath, dirnames, filenames) in os.walk(root):
             count += 1
             self.countDict[dirpath] = count
-        self.count2 = 0
         self.pbar = ProgressBar(maxval=count, term_width=self.showWidth).start()
 
         self.getdirsize(root)
@@ -47,6 +51,13 @@ class FoldAnalyze():
         self.sortBySize(self.dirSizeList)
 
     def getdirsize(self, root):
+        '''
+            calculate the size of folders one by one
+            including the size of folder and size of files inside the folder
+
+            input: str (path)
+            return: int (size)
+        '''
         for (dirpath, dirnames, filenames) in os.walk(root):
             try:
                 self.pbar.update(self.countDict[dirpath])
@@ -74,6 +85,7 @@ class FoldAnalyze():
                     if dirPath in self.dirSizeDict:
                         size += self.dirSizeDict[dirPath]
                     else:
+                        # some folders appear permmision problem
                         try:
                             size += self.getdirsize(os.path.join(dirpath, dirname))
                         except:
@@ -83,11 +95,26 @@ class FoldAnalyze():
                 return size
 
     def sortBySize(self, dirSizeList):
+        '''
+            dirSizeList should be in format:
+                [
+                (2,   'folder1'),
+                (102, 'folder2'),
+                (212, 'folder3'),
+                ...
+                ]
+            input: list
+            return: NULL
+        '''
         dirSizeList.sort()
         dirSizeList.reverse()
+
+        # Generate title
         title = ' Sorted By Size '
         markerLen = (self.showWidth - len(title)) / 2
         print '-'*markerLen + title + '-'*markerLen
+
+        # print out the sorted result
         for size, dirpath in dirSizeList:
             print self.formatStringLength(
                 width=self.showWidth,
@@ -96,6 +123,11 @@ class FoldAnalyze():
                 marker='-')
 
     def humanSizeString(self, size):
+        '''
+            convert size from 'Bytes' to readable name as 'KB', 'MB', etc.
+            input: int (size)
+            return: str
+        '''
         if size < 1024:
             return '%d Bytes'%size
         elif (1024 <= size) and (size < 1048576):
@@ -108,6 +140,16 @@ class FoldAnalyze():
             return '%d TB'%(size / 1099511627776)
 
     def formatStringLength(self, width, header, tailor, marker='-'):
+        '''
+            unify each line in the output list in the same width
+            input:
+                width  -> int (the output list width, pre-defined)
+                header -> str (folder path)
+                tailor -> str (folder size string info)
+                marker -> str (divider marker, can be customed)
+            return: str
+
+        '''
         headerString = header[:]
         tailorString = tailor[:]
         if 'Linux' == self.OSInfo:
@@ -146,9 +188,11 @@ class FoldAnalyze():
                     lenHeader = 0
 
 if __name__ == '__main__':
+
     if len(sys.argv) == 1:
-        #a = FoldAnalyze
-        FoldAnalyze()
+        root = '.'
+        FoldAnalyze(root)
     else:
-        FoldAnalyze(sys.argv[1])
+        root = sys.argv[1]
+        FoldAnalyze(root)
 
