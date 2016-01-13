@@ -21,34 +21,38 @@ class FoldAnalyze():
     '''
         List the folders in size order
     '''
-    def __init__(self, root='.'):
+    def __init__(self, root):
 
-        self.OSInfo = platform.system() # Used to identify the Linux or Windows
-                                        # platform, which differ in codec in
-                                        # folder name
+        if root == None:
+            print 'help'
+        else:
 
-        # try to find the width of terminal
-        try:
-            h, w = array('h', ioctl(sys.stderr, termios.TIOCGWINSZ, '\0' * 8))[:2]
-        except:
-            w = 80
+            self.OSInfo = platform.system() # Used to identify the Linux or Windows
+                                            # platform, which differ in codec in
+                                            # folder name
 
-        self.showWidth = w - 10 # Setup the width of list
-        self.dirSizeList = []   # Store directories size info in list type
-        self.dirSizeDict = {}   # Store directories size info in dict type
+            # try to find the width of terminal
+            try:
+                h, w = array('h', ioctl(sys.stderr, termios.TIOCGWINSZ, '\0' * 8))[:2]
+            except:
+                w = 80
 
-        # Progress Bar
-        count = 0
-        self.countDict = {}
-        for (dirpath, dirnames, filenames) in os.walk(root):
-            count += 1
-            self.countDict[dirpath] = count
-        self.pbar = ProgressBar(maxval=count, term_width=self.showWidth).start()
+            self.showWidth = w - 10 # Setup the width of list
+            self.dirSizeList = []   # Store directories size info in list type
+            self.dirSizeDict = {}   # Store directories size info in dict type
 
-        self.getdirsize(root)
-        self.dirSizeList = [(value, key) for key, value in self.dirSizeDict.items()]
-        self.pbar.finish()
-        self.sortBySize(self.dirSizeList)
+            # Progress Bar
+            count = 0
+            self.countDict = {}
+            for (dirpath, dirnames, filenames) in os.walk(root):
+                count += 1
+                self.countDict[dirpath] = count
+            self.pbar = ProgressBar(maxval=count, term_width=self.showWidth).start()
+
+            self.getdirsize(root)
+            self.dirSizeList = [(value, key) for key, value in self.dirSizeDict.items()]
+            self.pbar.finish()
+            self.sortBySize(self.dirSizeList)
 
     def getdirsize(self, root):
         '''

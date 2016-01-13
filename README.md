@@ -1,6 +1,22 @@
 # FoldAnalyze
 Order the folders in the folder size
 
+
+### Requirements
+You will need the prerequisities in order to use program:
+
+* python 2.7.x
+* progressbar 2.3 or newer
+
+### Basic
+How to use it
+.. image:: doc/base.gif
+   :align: center
+
+Compare to linux command: ``du``
+.. image:: doc/FA_vs_du.gif
+   :align: center
+
 ### Example
 step1:
 Download Python-2.7.11 from the python.org, 
