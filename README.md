@@ -10,12 +10,14 @@ You will need the prerequisities in order to use program:
 
 ### Basic
 How to use it
-.. image:: doc/base.gif
-   :align: center
+
+![base] (doc/base.gif)
+
 
 Compare to linux command: ``du``
-.. image:: doc/FA_vs_du.gif
-   :align: center
+
+![compare] (doc/FA_vs_du.gif)
+
 
 ### Example
 step1:
