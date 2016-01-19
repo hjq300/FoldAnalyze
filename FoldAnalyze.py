@@ -91,7 +91,12 @@ class FoldAnalyze():
                     else:
                         # some folders appear permmision problem
                         try:
-                            size += self.getdirsize(os.path.join(dirpath, dirname))
+                            dirpathname = os.path.join(dirpath, dirname)
+                            if os.path.islink(dirpathname):
+                                # assume size of link file is zero
+                                size += 0 # os.path.getsize(dirpathname)
+                            else:
+                                size += self.getdirsize(os.path.join(dirpath, dirname))
                         except:
                             size += 0
                 size += os.path.getsize(dirpath)
