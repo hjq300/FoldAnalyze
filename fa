@@ -11,10 +11,21 @@ import FoldAnalyze
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 1:
-        root = '.'
-        FoldAnalyze.FoldAnalyze(root)
+    argvs = sys.argv[1:]
+    if len(argvs) == 0:
+        print 'Need some parameters like -s<size> -l<list>'
     else:
-        root = sys.argv[1]
-        FoldAnalyze.FoldAnalyze(root)
+        if '-s' in argvs:
+            argvs.remove('-s')
+            if len(argvs) == 1: # assume remain path
+                root = argvs[1]
+            elif len(argvs) == 0:
+                root = '.'
+            FoldAnalyze.FoldAnalyze(root)
+        elif '-l' in argvs:
+            argvs.remove('-l')
+            if len(argvs) == 1: # assume remain path
+                root = argvs[1]
+            elif len(argvs) == 0:
+                root = '.'
 
