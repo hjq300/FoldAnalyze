@@ -9,6 +9,8 @@ import sys
 import platform
 from progressbar import ProgressBar
 
+from extend.Utils import StringUtils
+
 #used to find the width of terminal
 try:
     from array import array
@@ -17,7 +19,7 @@ try:
 except:
     pass
 
-class FoldAnalyze():
+class FoldSizeAnalyze():
     '''
         List the folders in size order
     '''
@@ -128,25 +130,8 @@ class FoldAnalyze():
             print self.formatStringLength(
                 width=self.showWidth,
                 header=dirpath,
-                tailor=self.humanSizeString(size),
+                tailor=StringUtils().humanSizeString(size),
                 marker='-')
-
-    def humanSizeString(self, size):
-        '''
-            convert size from 'Bytes' to readable name as 'KB', 'MB', etc.
-            input: int (size)
-            return: str
-        '''
-        if size < 1024:
-            return '%d Bytes'%size
-        elif (1024 <= size) and (size < 1048576):
-            return '%d KB'%(size / 1024)
-        elif (1048576 <= size) and (size < 1073741824):
-            return '%d MB'%(size / 1048576)
-        elif (1073741824 <= size) and (size < 1099511627776):
-            return '%d GB'%(size / 1073741824)
-        else:
-            return '%d TB'%(size / 1099511627776)
 
     def formatStringLength(self, width, header, tailor, marker='-'):
         '''
@@ -196,12 +181,26 @@ class FoldAnalyze():
                     headerString = ''
                     lenHeader = 0
 
+class FoldStructureAnalyze():
+    '''
+        list the fold structure like tree
+    '''
+
+    def __init__(self):
+        pass
+
+    def showDirTree(self, root='.'):
+        for (dirpath, dirnames, filenames) in os.walk(root):
+            print '_' + dirpath
+            for item in filenames:
+                print ' '*len(dirpath) + '|_' + item
+
 if __name__ == '__main__':
 
     if len(sys.argv) == 1:
         root = '.'
-        FoldAnalyze(root)
+        FoldSizeAnalyze(root)
     else:
         root = sys.argv[1]
-        FoldAnalyze(root)
+        FoldSizeAnalyze(root)
 

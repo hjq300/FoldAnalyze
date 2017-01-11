@@ -7,7 +7,7 @@
 
 import sys
 
-import FoldAnalyze
+from FoldAnalyze import FoldSizeAnalyze, FoldStructureAnalyze
 
 if __name__ == '__main__':
 
@@ -21,11 +21,12 @@ if __name__ == '__main__':
                 root = argvs[1]
             elif len(argvs) == 0:
                 root = '.'
-            FoldAnalyze.FoldAnalyze(root)
+            FoldSizeAnalyze(root)
         elif '-l' in argvs:
             argvs.remove('-l')
             if len(argvs) == 1: # assume remain path
                 root = argvs[1]
             elif len(argvs) == 0:
                 root = '.'
+            FoldStructureAnalyze().showDirTree(root)
 

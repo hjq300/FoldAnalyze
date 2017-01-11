@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 # Anthor: Huang jianqiang
 # From: Shenzhen
-# Date: 2017-01-09
-# Description: the executor
+# Date: 2017-01-11
+# Description: the executor to show the structure of fold
 
 
 import sys
 
-from FoldAnalyze import FoldSizeAnalyze
+from FoldAnalyze import FoldStructureAnalyze
 
 if __name__ == '__main__':
 
     if len(sys.argv) == 1:
         root = '.'
-        FoldSizeAnalyze(root)
     else:
         root = sys.argv[1]
-        FoldSizeAnalyze(root)
+
+    FoldStructureAnalyze().showDirTree(root)
+
 
