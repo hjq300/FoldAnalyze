@@ -192,18 +192,28 @@ class FoldStructureAnalyze():
         pass
 
     def showDirTree(self, root='.', isDetail=True):
+        os.chdir(root)
         tmpPath = ""
         for (dirpath, dirnames, filenames) in os.walk(root):
             if not tmpPath == dirpath:
                 dirPeace = dirpath.split(os.path.sep)
                 space = (self.SPACE + ' '*len(self.SPLIT_PATTEN)) * (len(dirPeace) - 1)
-                print space + self.SPLIT_PATTEN + os.path.basename(dirpath)
+                print StringUtils().colorfulString(1, 31, 40, space + self.SPLIT_PATTEN + os.path.basename(dirpath))
             else:
                 tmpPath = dirpath
             if isDetail:
                 for filename in filenames:
                     space = (self.SPACE + ' '*len(self.SPLIT_PATTEN)) * len(dirPeace)
-                    print space + self.SPLIT_PATTEN + filename
+                    if self.isExecutable(os.path.join(dirpath, filename)):
+                        print StringUtils().colorfulString(1, 32, 40, space + self.SPLIT_PATTEN + filename)
+                    else:
+                        print space + self.SPLIT_PATTEN + filename
+
+    def isExecutable(self, filepath):
+        if os.path.exists(filepath):
+            return os.access(filepath, os.X_OK)
+        else:
+            return false
 
 if __name__ == '__main__':
 
