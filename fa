@@ -11,22 +11,27 @@ from FoldAnalyze import FoldSizeAnalyze, FoldStructureAnalyze
 
 if __name__ == '__main__':
 
-    argvs = sys.argv[1:]
-    if len(argvs) == 0:
+    argvs = sys.argv
+    if len(argvs) == 1:
         print 'Need some parameters like -s<size> -l<list>'
     else:
         if '-s' in argvs:
             argvs.remove('-s')
-            if len(argvs) == 1: # assume remain path
+            if len(argvs) == 2: # assume remain path
                 root = argvs[1]
-            elif len(argvs) == 0:
+            elif len(argvs) == 1:
                 root = '.'
             FoldSizeAnalyze(root)
         elif '-l' in argvs:
             argvs.remove('-l')
+            isDetail = True
+            if '-d' in argvs:
+                isDetail = False
+                argvs.remove('-d')
             if len(argvs) == 1: # assume remain path
-                root = argvs[1]
-            elif len(argvs) == 0:
                 root = '.'
-            FoldStructureAnalyze().showDirTree(root)
+            else:
+                root = sys.argv[1]
+            print argvs
+            FoldStructureAnalyze().showDirTree(root, isDetail)
 

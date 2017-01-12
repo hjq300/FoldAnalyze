@@ -187,13 +187,23 @@ class FoldStructureAnalyze():
     '''
 
     def __init__(self):
+        self.SPACE = " "*2
+        self.SPLIT_PATTEN = '|_'
         pass
 
-    def showDirTree(self, root='.'):
+    def showDirTree(self, root='.', isDetail=True):
+        tmpPath = ""
         for (dirpath, dirnames, filenames) in os.walk(root):
-            print '_' + dirpath
-            for item in filenames:
-                print ' '*len(dirpath) + '|_' + item
+            if not tmpPath == dirpath:
+                dirPeace = dirpath.split(os.path.sep)
+                space = (self.SPACE + ' '*len(self.SPLIT_PATTEN)) * (len(dirPeace) - 1)
+                print space + self.SPLIT_PATTEN + os.path.basename(dirpath)
+            else:
+                tmpPath = dirpath
+            if isDetail:
+                for filename in filenames:
+                    space = (self.SPACE + ' '*len(self.SPLIT_PATTEN)) * len(dirPeace)
+                    print space + self.SPLIT_PATTEN + filename
 
 if __name__ == '__main__':
 

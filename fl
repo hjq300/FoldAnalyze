@@ -11,11 +11,16 @@ from FoldAnalyze import FoldStructureAnalyze
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 1:
+    argvs = sys.argv
+    isDetail = True
+    if '-d' in argvs:
+        isDetail = False
+        argvs.remove('-d')
+    if len(argvs) == 1:
         root = '.'
     else:
         root = sys.argv[1]
 
-    FoldStructureAnalyze().showDirTree(root)
+    FoldStructureAnalyze().showDirTree(root, isDetail)
 
 
